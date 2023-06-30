@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NewProductComponent } from './new-product/new-product.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -24,6 +24,8 @@ import { RegistroComponent } from './registro/registro.component';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideStorage,getStorage } from '@angular/fire/storage';
+import { UserComponent } from './user/user.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
     HomeComponent,
     NavbarComponent,
     LoginComponent,
-    RegistroComponent
+    RegistroComponent,
+    UserComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +54,10 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
     MatIconModule,
     MatDialogModule,
     MatButtonToggleModule,
+    ReactiveFormsModule,
+    RouterModule,
+    
+
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideStorage(() => getStorage())
   ],

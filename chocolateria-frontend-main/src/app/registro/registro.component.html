@@ -1,11 +1,11 @@
 <div class="container mt-5">
     <div class="card" style="padding: 20px;">
-        <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
+
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Username</mat-label>
                 <input matInput
-                       ngModel
-                       name="userName"
+                       formControlName="userName"
                        id="userName"
                        placeholder="Username">
                 <mat-hint>Username</mat-hint>
@@ -14,8 +14,7 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Nombre</mat-label>
                 <input matInput
-                       ngModel
-                       name="userFirstName"
+                       formControlName="userFirstName"
                        id="userFirstName"
                        placeholder="Firstname">
                 <mat-hint>Nombre</mat-hint>
@@ -24,8 +23,7 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Apellido</mat-label>
                 <input matInput
-                       ngModel
-                       name="userLastName"
+                       formControlName="userLastName"
                        id="userLastName"
                        placeholder="Lastname">
                 <mat-hint>Apellido</mat-hint>
@@ -34,8 +32,7 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Contraseña</mat-label>
                 <input matInput
-                       ngModel
-                       name="userPassword"
+                       formControlName="userPassword"
                        id="userPassword"
                        placeholder="Password">
                 <mat-hint>contraseña</mat-hint>

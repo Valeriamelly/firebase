@@ -1,42 +1,95 @@
-mat-grid-tile {
-    border: 1px solid #eee;
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-top: 20px;
 }
 
-.btn-remove-image {
-    position: absolute;
-    cursor: pointer;
-    top: -10px;
-    right: -10px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: auto;
-    text-align: center;
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    
+}
+
+.form-container {
+    max-width: 500px; /* Limita el ancho de los campos del formulario */
+    margin: 0 auto; /* Centra el contenedor del formulario */
+}
+
+.mat-form-field {
+    margin-bottom: 20px;
+    display: block; /* Asegura que cada campo del formulario se muestre en una nueva línea */
+    width: 50%; /* Asegura que los campos del formulario ocupen todo el ancho disponible */
+    margin: 0 auto;
+}
+
+button {
+    margin-top: 20px;
 }
 
 .dropzone {
-    height: 150px;
-    min-width: 100px;
-    display: table;
-    background-color: #eee;
-    width: 300px;
-    border: dashed 1px #aaa;
-    border-radius: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+    width: 300px; /* Ancho de la dropzone */
+    height: 200px; /* Altura de la dropzone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto; /* Centra la dropzone horizontalmente */
+    margin-top: 20px;
 }
 
 .text-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.centered {
     text-align: center;
 }
 
 .browse-button {
-    color: blue;
+    color: #0087F7;
     cursor: pointer;
+    text-decoration: underline;
 }
+
+mat-grid-tile .btn-remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #ff0000;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+mat-grid-tile .btn-remove-image:hover {
+    opacity: 1;
+}
+
+.mat-grid-tile-content {
+    top: 30;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 100px;
+    margin: 0;
+}
+
+
+
+
+

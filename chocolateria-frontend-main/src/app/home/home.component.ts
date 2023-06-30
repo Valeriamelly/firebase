@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Product } from '../models/product.model';
 import { ProductService } from '../services/product.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -15,22 +16,29 @@ export class HomeComponent implements OnInit {
 
   pageNumber: number = 0;
   productDetails: any = {};
+  searchForm: FormGroup;
 
   showLoadButton = false;
 
   constructor(private productService: ProductService,
     private imageProcessingService: ImageProcessingService,
-    private router: Router) { }
+    private router: Router,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.searchForm = this.formBuilder.group({
+      searchKey: ['']
+    });
     this.getAllProducts();
+    this.onChanges();
   }
 
-  searchByKeyword(searchkeyword:string) {
-    console.log(searchkeyword);
-    this.pageNumber = 0;
-    this.productDetails = [];
-    this.getAllProducts(searchkeyword);
+  onChanges(): void {
+    this.searchForm.get('searchKey').valueChanges.subscribe(val => {
+      this.pageNumber = 0;
+      this.productDetails = [];
+      this.getAllProducts(val);
+    });
   }
 
   public getAllProducts(searchKey: string = "") {

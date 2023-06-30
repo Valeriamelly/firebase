@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { FileHandle } from "../models/file-handle.model";
@@ -8,7 +8,6 @@ import { Product } from "../models/product.model";
 import { ProductService } from "../services/product.service";
 import { Storage, ref, uploadBytes} from '@angular/fire/storage';
 import { catchError, of } from "rxjs";
-
 
 @Component({
   selector: "app-new-product",
@@ -18,46 +17,37 @@ import { catchError, of } from "rxjs";
 export class NewProductComponent implements OnInit {
   isNewProduct = true;
   file: any;
-
-  product: Product = {
-    
-    productId:0,
-    productName: "",
-    productDescription: "",
-    productDiscountedPrice: 0,
-    productActualPrice: 0,
-    productImages: [],
-  };
+  productForm: FormGroup;
 
   constructor(
+    private formBuilder: FormBuilder,
     private storage: Storage,
     private productService: ProductService,
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+    this.productForm = this.formBuilder.group({
+      productId: [0],
+      productName: ["", Validators.required],
+      productDescription: ["", Validators.required],
+      productDiscountedPrice: [0, Validators.required],
+      productActualPrice: [0, Validators.required],
+      productImages: this.formBuilder.array([])
+    });
+  }
 
   ngOnInit(): void {
-    this.product = this.activatedRoute.snapshot.data['product'];
 
-    if(this.product && this.product.productId) {
+    const product: Product = this.activatedRoute.snapshot.data['product'];
+
+    if(product && product.productId) {
       this.isNewProduct = false;
+      this.productForm.patchValue(product);
     }
   }
 
- /* addProduct(productForm: NgForm) {
-    const formData = this.prepareFormDataForProduct(this.product);
-    this.productService.addProduct(formData).subscribe(
-      (response: Product) => {
-        productForm.reset();
-        this.product.productImages = [];
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    );
-  }*/
-  addProduct(productForm: NgForm) {
-    const formData = this.prepareFormDataForProduct(this.product);
+  addProduct() {
+    const formData = this.prepareFormDataForProduct(this.productForm.value);
     this.productService.addProduct(formData).pipe(
       catchError((error: HttpErrorResponse) => {
         console.log(error);
@@ -66,12 +56,13 @@ export class NewProductComponent implements OnInit {
     ).subscribe(
       (response: Product | null) => {
         if (response) { // Comprueba si la respuesta no es nula antes de usarla
-          productForm.reset();
-          this.product.productImages = [];
+          this.productForm.reset();
+          this.productForm.setControl('productImages', this.formBuilder.array([]));
         }
       }
     );
   }
+  
 
   prepareFormDataForProduct(product: Product): FormData {
     const uploadImageData = new FormData();
@@ -80,11 +71,11 @@ export class NewProductComponent implements OnInit {
       new Blob([JSON.stringify(product)], { type: "application/json" })
     );
 
-    for (var i = 0; i < this.product.productImages.length; i++) {
+    for (var i = 0; i < product.productImages.length; i++) {
       uploadImageData.append(
         "imageFile",
-        this.product.productImages[i].file,
-        this.product.productImages[i].file.name
+        product.productImages[i].file,
+        product.productImages[i].file.name
       );
     }
     return uploadImageData;
@@ -107,15 +98,15 @@ export class NewProductComponent implements OnInit {
           window.URL.createObjectURL(file)
         ),
       };
-      this.product.productImages.push(fileHandle);
+      (this.productForm.get('productImages') as FormArray).push(this.formBuilder.control(fileHandle));
     }
   }
 
   removeImages(i: number) {
-    this.product.productImages.splice(i, 1);
+    (this.productForm.get('productImages') as FormArray).removeAt(i);
   }
 
   fileDropped(event:any) {
-    this.product.productImages.push(event);
+    (this.productForm.get('productImages') as FormArray).push(this.formBuilder.control(event));
   }
 }
