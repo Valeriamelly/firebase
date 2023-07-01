@@ -13,15 +13,15 @@ const routes: Routes = [
   { path: "", component: HomeComponent },
   {
     path: "admin",
-    component: AdminComponent,
-    /*canActivate: [AuthGuard],
+    component: AdminComponent,/*
+    canActivate: [AuthGuard],
     data: { roles: ["Admin"] },*/
   },
   {
     path: "user",
     component: UserComponent,
     /*canActivate: [AuthGuard],
-    data: { roles: ["User"] },*/
+    data: { roles: ["User"] }, */
   },
   { path: "login", component: LoginComponent },
   {
