@@ -23,6 +23,12 @@
                         <mat-label>Product Discounted Price</mat-label>
                         <input matInput placeholder="Product Discounted Price" formControlName="productDiscountedPrice">
                     </mat-form-field>
+
+                    <div align="center">
+                        <button mat-stroked-button color="primary" style="margin-right: 3px;" (click)="productForm.reset()">Clear</button>
+                        <button type="submit" *ngIf="isNewProduct" mat-stroked-button color="primary">Add Product</button>
+                        <button type="submit" *ngIf="!isNewProduct" mat-stroked-button color="primary">Update Product</button>
+                    </div>
                     
                 </form>
             </div>
@@ -52,11 +58,7 @@
                     </div>
                 </div>
             </div>
-            <div align="center">
-                <button mat-stroked-button color="primary" style="margin-right: 3px;" (click)="productForm.reset()">Clear</button>
-                <button type="submit" *ngIf="isNewProduct" mat-stroked-button color="primary">Add Product</button>
-                <button type="submit" *ngIf="!isNewProduct" mat-stroked-button color="primary">Update Product</button>
-            </div>
+           
         </div>
     </div>
 </div>

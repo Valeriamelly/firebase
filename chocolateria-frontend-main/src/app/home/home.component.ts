@@ -1,11 +1,10 @@
-import { ImageProcessingService } from './../image-processing.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { ImageProcessingService } from '../image-processing.service';
 import { Product } from '../models/product.model';
 import { ProductService } from '../services/product.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -15,58 +14,51 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class HomeComponent implements OnInit {
 
   pageNumber: number = 0;
-  productDetails: any = {};
-  searchForm: FormGroup;
-
+  productDetails: Product[] = [];
   showLoadButton = false;
 
-  constructor(private productService: ProductService,
+  constructor(
+    private productService: ProductService,
     private imageProcessingService: ImageProcessingService,
-    private router: Router,
-    private formBuilder: FormBuilder) { }
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.searchForm = this.formBuilder.group({
-      searchKey: ['']
-    });
     this.getAllProducts();
-    this.onChanges();
   }
 
-  onChanges(): void {
-    this.searchForm.get('searchKey').valueChanges.subscribe(val => {
-      this.pageNumber = 0;
-      this.productDetails = [];
-      this.getAllProducts(val);
-    });
+  searchByKeyword(searchKeyword: string) {
+    console.log(searchKeyword);
+    this.pageNumber = 0;
+    this.productDetails = [];
+    this.getAllProducts(searchKeyword);
   }
 
-  public getAllProducts(searchKey: string = "") {
+  getAllProducts(searchKey: string = "") {
     this.productService.getAllProducts(this.pageNumber, searchKey)
-    .pipe(
-      map((x: Product[], i) => x.map((product: Product) => this.imageProcessingService.createImages(product)))
-    )
-    .subscribe(
-      (resp: Product[]) => {
-        console.log(resp);
-        if(resp.length == 12) {
-          this.showLoadButton = true;
-        } else {
-          this.showLoadButton = false;
+      .pipe(
+        map((products: Product[]) => products.map(product => this.imageProcessingService.createImages(product)))
+      )
+      .subscribe({
+        next: (resp: Product[]) => {
+          console.log(resp);
+          this.showLoadButton = resp.length === 12;
+          resp.forEach((p: Product) => {
+            this.productDetails = this.productDetails.concat(p);
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
         }
-        resp.forEach(p => this.productDetails.push(p));
-      }, (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    );
+      });
   }
 
-  public loadMoreProduct() {
-    this.pageNumber = this.pageNumber + 1;
+  loadMoreProduct() {
+    this.pageNumber++;
     this.getAllProducts();
   }
 
-  showProductDetails(productId:number) {
-    this.router.navigate(['/productViewDetails', {productId: productId}]);
+  showProductDetails(productId:number | null) {
+    this.router.navigate(['/productViewDetails', { productId }]);
   }
 }
