@@ -26,6 +26,9 @@ import { environment } from '../environments/environment';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { UserComponent } from './user/user.component';
 import { AdminComponent } from './admin/admin.component';
+import { ProductViewDetailsComponent } from './product-view-details/product-view-details.component';
+import { ListProductsComponent } from './list-products/list-products.component';
+import { ShowProductImagesDialogComponent } from './show-product-images-dialog/show-product-images-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { AdminComponent } from './admin/admin.component';
     LoginComponent,
     RegistroComponent,
     UserComponent,
-    AdminComponent
+    AdminComponent,
+    ProductViewDetailsComponent,
+    ListProductsComponent,
+    ShowProductImagesDialogComponent
   ],
   imports: [
     BrowserModule,

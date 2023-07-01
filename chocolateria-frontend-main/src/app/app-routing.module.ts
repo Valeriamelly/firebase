@@ -8,20 +8,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { UserComponent } from './user/user.component';
+import { ProductViewDetailsComponent } from './product-view-details/product-view-details.component';
+import { ListProductsComponent } from './list-products/list-products.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
   {
     path: "admin",
-    component: AdminComponent,/*
+    component: AdminComponent,
     canActivate: [AuthGuard],
-    data: { roles: ["Admin"] },*/
+    data: { roles: ["Admin"] },
   },
   {
     path: "user",
     component: UserComponent,
-    /*canActivate: [AuthGuard],
-    data: { roles: ["User"] }, */
+    canActivate: [AuthGuard],
+    data: { roles: ["User"] }, 
   },
   { path: "login", component: LoginComponent },
   {
@@ -31,11 +33,22 @@ const routes: Routes = [
   {
     path: "addNewProduct",
     component: NewProductComponent,
-    /*canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     data: { roles: ["Admin"] },
     resolve: {
       product: ProductResolveService,
-    },*/
+    },
+  },
+  {
+    path: "productViewDetails",
+    component: ProductViewDetailsComponent,
+    resolve: { product: ProductResolveService },
+  },
+  {
+    path: "showProductDetails",
+    component: ListProductsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ["Admin"] },
   },
 ];
 
